@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -22,16 +23,21 @@ public class minishell_tester
         String[] tab = my_str_to_word_array("./mysh", " ");
         ProcessBuilder pb = new ProcessBuilder(tab);
         pb.directory(new File("/home/guillaume/Epitech/Minishell1/Minishell1/"));
-        Process process = pb.start();
-        input input_reader = new input(process);
+        try {
+            Process process = pb.start();
+            input input_reader = new input(process);
     
-        send_output send = new send_output(process, "ls -l", input_reader);
+            send_output send = new send_output(process, "ls -l", input_reader);
 
-        input_reader.start();
-        send.start();
-        send.join();
+            input_reader.start();
+            send.start();
+            send.join();
 
-        send_output send2 = new send_output(process, "exit", input_reader);
-        send2.start();
+            send_output send2 = new send_output(process, "exit", input_reader);
+            send2.start();
+        } catch (IOException e){
+            System.out.println(e);
+            System.exit(84);
+        }
     }
 }
