@@ -60,11 +60,12 @@ class send_output extends Thread
 {
     private Process process;
     
-    public send_output(Process _process, String _commande)
+    public send_output(Process _process, String _commande, input _input_reader)
     {
         command = _commande;
         this.process = _process;
         this.print_status = false;
+        _input_reader.set_sender(this.getClass().cast(_input_reader));
     }
 
     public void run()
@@ -115,19 +116,17 @@ public class minishell_tester
         ProcessBuilder pb = new ProcessBuilder(tab);
         pb.directory(new File("/home/guillaume/Epitech/Minishell1/Minishell1/"));
         Process process = pb.start();
-        
-        input input_reader = new input(process);
-        send_output send = new send_output(process, "ls -l");
 
+        input input_reader = new input(process);
+        send_output send = new send_output(process, "ls -l", input_reader);
+        
         input_reader.set_sender(send);
 
-        
-        
         input_reader.start();
         send.start();
         send.join();
         
-        send_output send2 = new send_output(process, "exit");
+        send_output send2 = new send_output(process, "exit", input_reader);
         input_reader.set_sender(send2);
         send2.start();
     }
