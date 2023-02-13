@@ -1,0 +1,14 @@
+<project name="minishell_tester" default="compile">
+  <target name="compile">
+    <javac includeantruntime="false" srcdir="src" destdir="bin">
+      <classpath>
+        <pathelement location="bin"/>
+      </classpath>
+    </javac>
+  </target>
+  <target name="run" depends="compile">
+    <java classname="minishell_tester" dir="bin" classpath="bin">
+        <arg value="test_commande.txt"/>
+    </java>
+  </target>
+</project>

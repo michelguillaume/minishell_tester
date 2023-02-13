@@ -52,7 +52,7 @@ public class minishell_tester
             input_reader.start();
 
             for (int i = 0; i != list.size(); ++i){
-                System.out.println("\033[31mCommand : \033[33m" + list.get(i) + "\033[0m");
+                System.out.println("\033[31mCommand : \033[94m" + list.get(i) + "\033[0m");
                 send_output send = new send_output(process, list.get(i), input_reader);
                 send.start();
                 send.join();
