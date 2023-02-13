@@ -1,0 +1,7 @@
+ls -l
+ls -lacxy
+ls
+man cat
+man ls
+hasMoreTokens
+exit

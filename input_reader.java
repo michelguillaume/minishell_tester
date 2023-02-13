@@ -2,14 +2,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 
-class input extends Thread
+class input_reader extends Thread
 {
     private Process process;
+    private LinkedList<LinkedList<String>> result;
+    private LinkedList<String> test;
 
-    public input(Process _process)
+    public input_reader(Process _process, LinkedList<LinkedList<String>> _result)
     {
         this.process = _process;
+        result = _result;
+        this.test = new LinkedList<String>();
     }
 
     public void run()
@@ -21,22 +26,25 @@ class input extends Thread
         try {
             while ((lines = buffer.readLine()) != null){
                 if (!sender.get_print_status()) {
+                    if (test.size() != 0){
+                        result.add(new LinkedList<String>(test));
+                        test.clear();
+                    }
                     sender.set_print_status(true);
-                    System.out.print(lines.substring(0, this.header.length()) + " ");
-                    System.out.println(sender.get_command());
-                    System.out.println(lines.substring(this.header.length()));
+                    test.add(sender.get_command());
+                    if (!lines.substring(this.header.length()).equals(header))
+                        test.add(lines.substring(this.header.length()));
                     continue;
                 }
-                System.out.println(lines);
+                test.add(lines);
             }
         } catch (IOException e){}
         finally {
             try {
                 process.waitFor();
-                System.out.print("Exit Status : " + process.exitValue());
-            } catch (InterruptedException e) {
-                // Handle the InterruptedException if necessary
-            }
+                result.add(new LinkedList<String>(test));
+                System.out.println("Exit Status : " + process.exitValue());
+            } catch (InterruptedException e) {}
             process.destroy();
         }
 

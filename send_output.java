@@ -6,7 +6,7 @@ class send_output extends Thread
 {
     private Process process;
     
-    public send_output(Process _process, String _commande, input _input_reader)
+    public send_output(Process _process, String _commande, input_reader _input_reader)
     {
         command = _commande;
         this.process = _process;
